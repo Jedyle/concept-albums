@@ -7,3 +7,4 @@ media/
 *.html.py
 .idea
 db.sqlite3
+.env
