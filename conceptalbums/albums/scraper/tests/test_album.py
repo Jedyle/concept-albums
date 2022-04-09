@@ -12,7 +12,7 @@ def test_album():
             {"name": "Arcade Fire", "mbid": "52074ba6-e495-4ef3-9bb4-0703888a9f68"}
         ],
         "release_date": datetime.date(2013, 10, 25),
-        "cover": "22332698-146d-436f-84c5-3b9b98a469f1/22257182085-500.jpg",
+        "cover": "https://coverartarchive.org/release/22332698-146d-436f-84c5-3b9b98a469f1/22257182085-500.jpg",
         "album_type": "LP",
         "tracks": [
             {

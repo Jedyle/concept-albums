@@ -25,8 +25,7 @@ class ParseCover:
             images = self.cover["images"]
             for image in images:
                 if image["front"] is True:
-                    url = image["thumbnails"]["small"].split("/")
-                    return url[-2] + "/" + url[-1]
+                    return image["thumbnails"]["small"].replace("http://", "https://")
         except Exception:
             pass
         return ""
@@ -36,15 +35,13 @@ class ParseCover:
             images = self.cover["images"]
             for image in images:
                 if image["front"] is True:
-                    url = image["thumbnails"]["large"].split("/")
-                    return url[-2] + "/" + url[-1]
+                    return image["thumbnails"]["large"].replace("http://", "https://")
         except Exception:
             pass
         return ""
 
 
 class ParseTrackList:
-
     def __init__(self, url):
         self.url = url
 
@@ -176,7 +173,9 @@ class ParseAlbum:
         table = self.soup.find("table", {"class": "tbl"})
         first_release = table.tbody.find_all("tr")[1:2]
         if first_release:
-            release_link = first_release[0].find_all("td")[0].find_all("a")[-1]["href"].lstrip("/")
+            release_link = (
+                first_release[0].find_all("td")[0].find_all("a")[-1]["href"].lstrip("/")
+            )
             parse_track_list = ParseTrackList(self.root_url + release_link)
             if parse_track_list.load():
                 return parse_track_list.get_track_list()
