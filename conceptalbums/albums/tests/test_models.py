@@ -11,6 +11,7 @@ class TestAlbum:
         )
         assert str(album) == album.title
         assert album.album_type == "LP"
+        assert album.slug, album.slug
 
 
 @pytest.mark.django_db
@@ -21,7 +22,7 @@ class TestArtist:
             name = "Test"
         )
         assert str(artist) == artist.name
-
+        assert artist.slug, artist.slug
 
 @pytest.mark.django_db
 class TestTrack:
