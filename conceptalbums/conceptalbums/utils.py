@@ -22,5 +22,5 @@ def unique_slug_generator(instance, field, new_slug=None):
             slug=slug[: max_length - 5], randstr=random_string_generator(size=4)
         )
 
-        return unique_slug_generator(instance, new_slug=new_slug)
+        return unique_slug_generator(instance, field, new_slug=new_slug)
     return slug

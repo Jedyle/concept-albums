@@ -18,7 +18,8 @@ class ParseCover:
         req = requests.get(self.url + self.album_id)
         if req.status_code == 200:
             self.cover = req.json()
-        return req.status_code == 200
+        else:
+            raise Exception("Cover could not be parsed")
 
     def get_cover_small(self):
         try:
@@ -50,11 +51,12 @@ class ParseTrackList:
         if req.status_code == 200:
             page = req.content
             self.soup = BeautifulSoup(page, "html.parser")
-        return req.status_code == 200
+        else:
+            raise Exception(f"TrackList {self.url} could not be parsed")
 
     def get_track_list(self):
         tables = self.soup.find_all("table", {"class": "tbl"})
-        lists = []
+        tracks_per_cd = []
         for table in tables:
             try:
                 subh = table.tbody.find("tr", {"class": "subh"}).find_all("th")
@@ -85,7 +87,7 @@ class ParseTrackList:
                     title = name[0].text
                 else:
                     title = ""
-                lists.append(
+                tracks_per_cd.append(
                     {
                         "medium_title": title,
                         "tracks": cd,
@@ -93,7 +95,10 @@ class ParseTrackList:
                 )
             except Exception:
                 pass
-        return lists
+        flatten_track_list = [
+            track for medium in tracks_per_cd for track in medium["tracks"]
+        ]
+        return flatten_track_list
 
 
 class ParseAlbum:
@@ -113,7 +118,8 @@ class ParseAlbum:
         if req.status_code == 200:
             page = req.content
             self.soup = BeautifulSoup(page, "html.parser")
-        return req.status_code == 200
+        else:
+            raise Exception(f"Album {self.album_id} could not be parsed")
 
     def as_dict(self):
         return {
@@ -130,8 +136,8 @@ class ParseAlbum:
     @cached_property
     def cover(self):
         parse_cover = ParseCover(self.album_id)
-        if parse_cover.load():
-            return parse_cover.get_cover_large()
+        parse_cover.load()
+        return parse_cover.get_cover_large()
 
     @cached_property
     def title(self):
@@ -177,8 +183,8 @@ class ParseAlbum:
                 first_release[0].find_all("td")[0].find_all("a")[-1]["href"].lstrip("/")
             )
             parse_track_list = ParseTrackList(self.root_url + release_link)
-            if parse_track_list.load():
-                return parse_track_list.get_track_list()
+            parse_track_list.load()
+            return parse_track_list.get_track_list()
 
     @cached_property
     def album_type(self):
