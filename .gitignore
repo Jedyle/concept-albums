@@ -6,3 +6,4 @@ __pycache__
 media/
 *.html.py
 .idea
+db.sqlite3
