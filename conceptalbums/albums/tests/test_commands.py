@@ -4,6 +4,7 @@ from albums.models import Album, Track
 from albums.commands import create_album_from_musicbrainz_and_genius
 
 
+@pytest.mark.api
 @pytest.mark.django_db
 def test_create_album_from_musicbrainz_and_genius():
     # Vektor - Terminal Redux

@@ -1,7 +1,9 @@
+import pytest
 import datetime
 from ..parse_album import ParseAlbum
 
 
+@pytest.mark.api
 def test_album():
     album = ParseAlbum("3dc9ee80-0768-490d-9e43-534796da3076")
     album.load()
