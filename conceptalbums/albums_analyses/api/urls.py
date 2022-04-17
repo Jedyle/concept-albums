@@ -8,5 +8,6 @@ from . import views
 # router.register(r'albums/{slug}/', views.AlbumRetrieve)
 
 urlpatterns = [
-    path('albums/<slug>/analyses/', views.AnalysisListView.as_view())
+    path('albums/<slug>/analyses/', views.AnalysisListView.as_view()),
+    path('albums_analyses/<int:pk>', views.AnalysisDetailsView.as_view())
 ]
