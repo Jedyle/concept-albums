@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+
+def email_success(request):
+    res = 'Your email is verified!'
+    return HttpResponse('<p>%s</p>' % res)

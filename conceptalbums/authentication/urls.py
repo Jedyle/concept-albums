@@ -20,6 +20,8 @@ from django.views.defaults import page_not_found
 from django.contrib.auth import views as auth_views
 from allauth.account.views import confirm_email
 
+from . import views
+
 urlpatterns = [
     # disabling API password reset views
     re_path(
@@ -56,4 +58,5 @@ urlpatterns = [
         confirm_email,
         name="account_confirm_email",
     ),
+    path("email_success/", views.email_success, name="email_success"),
 ]
