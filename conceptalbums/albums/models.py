@@ -3,7 +3,7 @@ from conceptalbums.utils import unique_slug_generator
 
 
 class Album(models.Model):
-    mbid = models.CharField(db_index=True, max_length=36, unique=True)
+    mbid = models.CharField(db_index=True, max_length=36, unique=True, null=True)
     slug = models.SlugField(max_length=100, unique=True)
     title = models.CharField(max_length=500)
 
