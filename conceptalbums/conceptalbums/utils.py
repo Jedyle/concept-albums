@@ -1,5 +1,9 @@
 import string
 import random
+import jsonschema
+
+from django.utils.deconstruct import deconstructible
+from django.core.exceptions import ValidationError
 from django.utils.text import slugify
 
 
@@ -24,3 +28,23 @@ def unique_slug_generator(instance, field, new_slug=None):
 
         return unique_slug_generator(instance, field, new_slug=new_slug)
     return slug
+
+
+@deconstructible
+class JSONSchemaValidator:
+
+    ERROR_MESSAGE = "Value {} failed jsonschema validation."
+    
+    def __init__(self, schema):
+        self.schema = schema
+
+    def __eq__(self, other):
+        # to make sure this class is serializable for django migrations
+        # docs.djangoproject.com/en/4.0/topics/migrations/#migration-serializing
+        return self.schema == other.schema
+
+    def __call__(self, value):
+        try:
+            jsonschema.validate(instance=value, schema=self.schema)
+        except jsonschema.exceptions.ValidationError:
+            raise ValidationError(self.ERROR_MESSAGE.format(value))
