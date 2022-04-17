@@ -1,0 +1,16 @@
+* MODELS
+** DONE album analysis : add JSON format verification
+CLOSED: [2022-04-17 dim. 11:51]
+* REST API
+** setup DRF
+** user routes
+*** register
+*** register with google / facebook / spotify 
+*** login (with SSO too)
+*** change password
+** album routes
+*** GET album (public)
+*** GET album tracks (public)
+*** LIST / GET album analyses (user)
+*** CREATE / UPDATE analysis (user)
+*** LIKE analysis (user)
