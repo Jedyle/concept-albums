@@ -10,6 +10,8 @@ class Album(models.Model):
     release_date = models.DateField(blank=True, null=True)
     cover = models.CharField(max_length=100, null=True)
     tags = models.JSONField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     TYPE_CHOICES = (
         ("LP", "LP"),
@@ -32,6 +34,8 @@ class Track(models.Model):
     album = models.ForeignKey(Album, related_name="tracks", on_delete=models.CASCADE)
     track_number = models.PositiveIntegerField()
     lyrics = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.track_number}. {self.title} ({self.album.title})"
@@ -43,6 +47,8 @@ class Artist(models.Model):
     name = models.CharField(max_length=100)
 
     albums = models.ManyToManyField(Album, related_name="artists", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
