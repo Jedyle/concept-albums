@@ -39,6 +39,7 @@ class AlbumAnalysis(models.Model):
 
     class Meta:
         unique_together = [("album", "user")]
+        verbose_name_plural = "Album Analyses"
 
     def __str__(self):
         return f"Analysis of {self.album} - by {self.user.username}"

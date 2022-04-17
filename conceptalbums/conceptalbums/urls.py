@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import include, path
 
 api_routes = [
-    path("api/", include("albums.api.urls"))
+    path("api/", include("albums.api.urls")),
+    path("api/", include("albums_analyses.api.urls")),
 ]
 
 html_routes = [
