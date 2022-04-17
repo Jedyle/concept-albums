@@ -42,3 +42,21 @@ class AlbumAnalysis(models.Model):
 
     def __str__(self):
         return f"Analysis of {self.album} - by {self.user.username}"
+
+
+class LikeAnalysis(models.Model):
+    """
+    When a user likes an analysis, it creates this relationship
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="likes"
+    )
+    analysis = models.ForeignKey(
+        AlbumAnalysis, on_delete=models.CASCADE, related_name="likes"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = [("user", "analysis")]

@@ -17,6 +17,8 @@ CLOSED: [2022-04-17 dim. 15:43]
 CLOSED: [2022-04-17 dim. 17:08]
 *** DONE GET album tracks (public)
 CLOSED: [2022-04-17 dim. 17:08]
-*** LIST / GET alxbum analyses (user)
+*** LIST / GET album analyses (public)
+**** list of analysis for single album, filter by user, order by likes
+**** retrieve single analysis (with album)
 *** CREATE / UPDATE analysis (user)
-*** LIKE analysis (user)
+*** LIKE analysis (user except author)

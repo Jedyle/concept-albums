@@ -6,20 +6,18 @@ from conceptalbums.utils import JSONSchemaValidator
 from albums.models import Album
 from albums_analyses.models import AlbumAnalysis
 
+from .factories import AlbumAnalysisFactory
+
 
 @pytest.mark.django_db
 class TestAlbumAnalysis:
-    @pytest.fixture
-    @staticmethod
-    def album_and_user():
-        album = Album.objects.create(title="Test")
-        user = User.objects.create(username="testuser", password="testpass")
-        return album, user
 
-    def test_str(self, album_and_user):
-        album, user = album_and_user
-        analysis = AlbumAnalysis.objects.create(album=album, user=user, analysis={})
-        assert str(analysis) == f"Analysis of {album} - by {user.username}"
+    def test_str(self):
+        analysis = AlbumAnalysisFactory()
+        assert (
+            str(analysis)
+            == f"Analysis of {analysis.album} - by {analysis.user.username}"
+        )
 
     @pytest.mark.parametrize(
         "analysis_json",
@@ -32,9 +30,8 @@ class TestAlbumAnalysis:
             {"tracks": {"1": {"analysis": 1}}},  # analysis must be string
         ],
     )
-    def test_jsonschema_fail(self, album_and_user, analysis_json):
-        album, user = album_and_user
-        analysis = AlbumAnalysis(album=album, user=user, analysis=analysis_json)
+    def test_jsonschema_fail(self, analysis_json):
+        analysis = AlbumAnalysisFactory(analysis=analysis_json)
         with pytest.raises(ValidationError) as e:
             analysis.full_clean()
         assert (
@@ -48,15 +45,15 @@ class TestAlbumAnalysis:
             {"global": "test"},  # only global analysis
             {
                 "global": "test",
-                "tracks": {
-                    "1": {"analysis": "test"},
-                    "3": {"analysis": "my analysis"}
-                },
+                "tracks": {"1": {"analysis": "test"}, "3": {"analysis": "my analysis"}},
             },  # full
             {"tracks": {"1": {"analysis": "test"}}},  # only track analyses
         ],
     )
-    def test_jsonschema_success(self, album_and_user, analysis_json):
-        album, user = album_and_user
-        analysis = AlbumAnalysis(album=album, user=user, analysis=analysis_json)
+    def test_jsonschema_success(self, analysis_json):
+        analysis = AlbumAnalysisFactory(analysis=analysis_json)
         analysis.full_clean()  # should return nothing as there is no error
+
+
+class TestLikeAnalysis:
+    pass
