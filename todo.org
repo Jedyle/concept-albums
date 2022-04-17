@@ -2,12 +2,14 @@
 ** DONE album analysis : add JSON format verification
 CLOSED: [2022-04-17 dim. 11:51]
 * REST API
-** setup DRF
+** DONE setup DRF
+CLOSED: [2022-04-17 dim. 15:43]
 ** user routes
 *** register
 *** register with google / facebook / spotify 
 *** login (with SSO too)
-*** change password
+*** DONE change password
+CLOSED: [2022-04-17 dim. 15:43]
 ** album routes
 *** GET album (public)
 *** GET album tracks (public)

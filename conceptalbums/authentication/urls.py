@@ -14,11 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import include, path
+from django.urls import include, path, re_path
 
+from django.views.defaults import page_not_found
 from django.contrib.auth import views as auth_views
+from allauth.account.views import confirm_email
 
 urlpatterns = [
+    # disabling API password reset views
+    re_path(
+        "^api/authentication/password/reset/",
+        page_not_found,
+        {"exception": Exception()},
+    ),
+    # routes
     path(
         "authentication/password/reset/",
         auth_views.PasswordResetView.as_view(),
@@ -41,4 +50,10 @@ urlpatterns = [
     ),
     path("api/authentication/", include("dj_rest_auth.urls")),
     path("api/authentication/registration/", include("dj_rest_auth.registration.urls")),
+    # must be after dj_rest_auth.registration.urls
+    re_path(
+        r"^authentication/registration/account-confirm-email/(?P<key>.+)/$",
+        confirm_email,
+        name="account_confirm_email",
+    ),
 ]

@@ -138,6 +138,18 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# REST FRAMEWORK
+
+REST_FRAMEWORK = {
+    # "DEFAULT_FILTER_BACKENDS": (
+    #     "rest_framework_filters.backends.RestFrameworkFilterBackend",
+    # ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
