@@ -17,11 +17,12 @@ from django.contrib import admin
 from django.urls import include, path
 
 api_routes = [
-    path('', include('authentication.urls'))
+    path("api/", include("albums.api.urls"))
 ]
 
 html_routes = [
     path("admin/", admin.site.urls),
+    path("", include("authentication.urls")),  # both api and html routes
 ]
 
 urlpatterns = html_routes + api_routes

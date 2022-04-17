@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_filters",
     "rest_framework",
     "rest_framework.authtoken",
     "dj_rest_auth",
@@ -141,9 +142,7 @@ STATIC_URL = "static/"
 # REST FRAMEWORK
 
 REST_FRAMEWORK = {
-    # "DEFAULT_FILTER_BACKENDS": (
-    #     "rest_framework_filters.backends.RestFrameworkFilterBackend",
-    # ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",

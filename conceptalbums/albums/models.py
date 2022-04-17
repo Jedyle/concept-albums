@@ -29,7 +29,7 @@ class Album(models.Model):
 
 class Track(models.Model):
     title = models.CharField(max_length=200, null=False)
-    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, related_name="tracks", on_delete=models.CASCADE)
     track_number = models.PositiveIntegerField()
     lyrics = models.TextField()
 
