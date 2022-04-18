@@ -20,6 +20,9 @@ class Album(models.Model):
     )
     album_type = models.CharField(max_length=2, choices=TYPE_CHOICES, default="LP")
 
+    class Meta:
+        ordering = ["pk"]
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = unique_slug_generator(self, "title")
