@@ -12,7 +12,8 @@ CLOSED: [2022-04-17 dim. 16:19]
 CLOSED: [2022-04-17 dim. 16:19]
 *** DONE change password
 CLOSED: [2022-04-17 dim. 15:43]
-** album routes
+** DONE album routes
+CLOSED: [2022-04-18 lun. 16:45]
 *** DONE GET album (public)
 CLOSED: [2022-04-17 dim. 17:08]
 *** DONE GET album tracks (public)
@@ -25,6 +26,7 @@ CLOSED: [2022-04-17 dim. 18:42]
 CLOSED: [2022-04-18 lun. 15:12]
 **** DONE retrieve single analysis (with album)
 CLOSED: [2022-04-17 dim. 18:42]
-*** CREATE / UPDATE analysis (user)
+*** DONE CREATE / UPDATE analysis (user)
+CLOSED: [2022-04-18 lun. 16:45]
 *** DONE LIKE analysis
 CLOSED: [2022-04-18 lun. 15:12]
