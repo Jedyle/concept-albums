@@ -8,6 +8,7 @@ from albums_analyses.api.serializers import (
     AlbumAnalysisListSerializer,
     AlbumAnalysisDetailsSerializer,
     AlbumAnalysisCreateSerializer,
+    AlbumAnalysisUpdateSerializer,
     LikeAnalysisSerializer,
 )
 
@@ -24,9 +25,21 @@ class AnalysisListView(generics.ListAPIView):
     filterset_class = AlbumAnalysisFilter
 
 
-class AnalysisDetailsView(generics.RetrieveAPIView):
-    queryset = AlbumAnalysis.objects.all()
-    serializer_class = AlbumAnalysisDetailsSerializer
+class AnalysisDetailsView(generics.RetrieveUpdateAPIView):
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        if self.request.method == "GET":
+            return AlbumAnalysis.objects.all()
+        elif self.request.method in ("PUT", "PATCH"):
+            return AlbumAnalysis.objects.filter(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return AlbumAnalysisDetailsSerializer
+        elif self.request.method in ("PUT", "PATCH"):
+            return AlbumAnalysisUpdateSerializer
 
 
 class AnalysisCreateView(generics.CreateAPIView):

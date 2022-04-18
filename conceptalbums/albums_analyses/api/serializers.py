@@ -54,6 +54,14 @@ class AlbumAnalysisCreateSerializer(serializers.ModelSerializer):
     )
 
 
+class AlbumAnalysisUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AlbumAnalysis
+        fields = ["album", "analysis"]
+
+    album = serializers.SlugRelatedField(slug_field="slug", read_only=True)
+
+
 class LikeAnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = LikeAnalysis

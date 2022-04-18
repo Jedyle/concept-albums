@@ -168,6 +168,36 @@ class TestAnalysisDetailsView:
 
 
 @pytest.mark.django_db
+class TestAnalysisUpdateView:
+
+    URL = "/api/albums_analyses/{}/"
+
+    def test_not_logged(self, client):
+        id_ = Faker().random_int()
+        response = client.put(self.URL.format(id_), {})
+        assert response.status_code == status.HTTP_403_FORBIDDEN, response.json()
+
+    def test_user_is_not_author(self, user, logged_client):
+        analysis = AlbumAnalysisFactory()
+        response = logged_client.put(
+            self.URL.format(analysis.pk),
+            {"analysis": {"global": "changedData"}},
+            content_type="application/json",
+        )
+        assert response.status_code == status.HTTP_404_NOT_FOUND, response.json()
+
+    def test_ok(self, user, logged_client):
+        analysis = AlbumAnalysisFactory(user=user)
+        response = logged_client.put(
+            self.URL.format(analysis.pk),
+            {"analysis": {"global": "changedData"}},
+            content_type="application/json",
+        )
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()["analysis"] == {"global": "changedData"}
+
+
+@pytest.mark.django_db
 class TestLikeAnalysisView:
 
     URL = "/api/albums_analyses/{}/like/"
