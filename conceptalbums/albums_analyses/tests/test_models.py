@@ -1,17 +1,13 @@
 import pytest
-from django.contrib.auth.models import User
 
 from django.core.exceptions import ValidationError
 from conceptalbums.utils import JSONSchemaValidator
-from albums.models import Album
-from albums_analyses.models import AlbumAnalysis
 
-from .factories import AlbumAnalysisFactory
+from .factories import AlbumAnalysisFactory, LikeAnalysisFactory
 
 
 @pytest.mark.django_db
 class TestAlbumAnalysis:
-
     def test_str(self):
         analysis = AlbumAnalysisFactory()
         assert (
@@ -55,5 +51,9 @@ class TestAlbumAnalysis:
         analysis.full_clean()  # should return nothing as there is no error
 
 
+@pytest.mark.django_db
 class TestLikeAnalysis:
-    pass
+
+    def test_str(self):
+        like = LikeAnalysisFactory()
+        assert str(like) == f"User {like.user.username} likes '{like.analysis}'"

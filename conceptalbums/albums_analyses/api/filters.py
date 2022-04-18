@@ -8,3 +8,5 @@ class AlbumAnalysisFilter(filters.FilterSet):
         fields = {
             "user__username": ["exact", "icontains"]
         }
+
+    

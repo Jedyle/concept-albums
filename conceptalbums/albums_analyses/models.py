@@ -50,6 +50,7 @@ class LikeAnalysis(models.Model):
     """
     When a user likes an analysis, it creates this relationship
     """
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="likes"
     )
@@ -62,3 +63,6 @@ class LikeAnalysis(models.Model):
 
     class Meta:
         unique_together = [("user", "analysis")]
+
+    def __str__(self):
+        return f"User {self.user.username} likes '{self.analysis}'"

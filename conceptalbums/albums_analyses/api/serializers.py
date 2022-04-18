@@ -25,3 +25,5 @@ class AlbumAnalysisDetailsSerializer(serializers.ModelSerializer):
 
     user = serializers.SlugRelatedField(slug_field="username", read_only=True)
     album = AlbumDetailsSerializer(read_only=True)
+
+    
