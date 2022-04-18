@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from albums.models import Album, Track
+from albums.models import Album, Track, Artist
 
 
 class _NestedTrackSerializer(serializers.ModelSerializer):
@@ -9,9 +9,16 @@ class _NestedTrackSerializer(serializers.ModelSerializer):
         fields = ["title", "track_number", "lyrics"]
 
 
+class ArtistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Artist
+        fields = ["name", "slug", "mbid"]
+
+
 class AlbumDetailsSerializer(serializers.ModelSerializer):
 
     tracks = _NestedTrackSerializer(many=True, read_only=True)
+    artists = ArtistSerializer(many=True, read_only=True)
 
     class Meta:
         model = Album
@@ -29,4 +36,7 @@ class AlbumListSerializer(serializers.ModelSerializer):
             "cover",
             "tags",
             "album_type",
+            "artists"
         ]
+    artists = ArtistSerializer(many=True, read_only=True)
+        
