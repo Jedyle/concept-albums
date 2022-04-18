@@ -34,7 +34,7 @@ def unique_slug_generator(instance, field, new_slug=None):
 class JSONSchemaValidator:
 
     ERROR_MESSAGE = "Value {} failed jsonschema validation."
-    
+
     def __init__(self, schema):
         self.schema = schema
 

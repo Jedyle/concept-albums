@@ -36,7 +36,7 @@ class AlbumListSerializer(serializers.ModelSerializer):
             "cover",
             "tags",
             "album_type",
-            "artists"
+            "artists",
         ]
+
     artists = ArtistSerializer(many=True, read_only=True)
-        

@@ -14,9 +14,10 @@ class TrackFactory(factory.django.DjangoModelFactory):
 
 class ArtistFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = 'albums.Artist'
+        model = "albums.Artist"
+
     mbid = factory.LazyFunction(lambda: str(uuid.uuid4()))
-    name = factory.Faker('name')
+    name = factory.Faker("name")
 
 
 class AlbumFactory(factory.django.DjangoModelFactory):

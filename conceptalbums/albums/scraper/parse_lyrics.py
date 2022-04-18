@@ -13,21 +13,15 @@ class GeniusClient:
 
     def make_api_request(self, url, method="GET"):
         return getattr(requests, method.lower())(
-            GENIUS_API + url, headers={
-                "Authorization": f"Bearer {self.access_token}"
-            }
+            GENIUS_API + url, headers={"Authorization": f"Bearer {self.access_token}"}
         )
 
     def find_song(self, artist_name, song_name):
         try:
-            response = self.make_api_request(
-                f"/search?q={artist_name} {song_name}"
-            )
+            response = self.make_api_request(f"/search?q={artist_name} {song_name}")
             json_results = response.json()["response"]["hits"]
             # we fetch the first song item in the list
-            song = next(
-                hit["result"] for hit in json_results if hit["index"] == "song"
-            )
+            song = next(hit["result"] for hit in json_results if hit["index"] == "song")
             return song
         except Exception:
             print("Song not found !")
@@ -42,9 +36,7 @@ class GeniusClient:
             for br in div.find_all("br"):
                 br.replace_with("\n")
 
-        lyrics_divs_as_text = [
-            el.get_text(separator="\n") for el in lyrics_divs
-        ]
+        lyrics_divs_as_text = [el.get_text(separator="\n") for el in lyrics_divs]
         lyrics_text_flattened = "\n".join(lyrics_divs_as_text)
         return lyrics_text_flattened
 

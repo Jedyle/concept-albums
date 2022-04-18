@@ -8,41 +8,81 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Album',
+            name="Album",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('mbid', models.CharField(db_index=True, max_length=36, unique=True)),
-                ('slug', models.SlugField(max_length=100, unique=True)),
-                ('title', models.CharField(max_length=500)),
-                ('release_date', models.DateField(blank=True, null=True)),
-                ('cover', models.CharField(max_length=100, null=True)),
-                ('tags', models.JSONField(null=True)),
-                ('album_type', models.CharField(choices=[('LP', 'LP'), ('EP', 'EP'), ('UK', 'Unknown')], default='LP', max_length=2)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("mbid", models.CharField(db_index=True, max_length=36, unique=True)),
+                ("slug", models.SlugField(max_length=100, unique=True)),
+                ("title", models.CharField(max_length=500)),
+                ("release_date", models.DateField(blank=True, null=True)),
+                ("cover", models.CharField(max_length=100, null=True)),
+                ("tags", models.JSONField(null=True)),
+                (
+                    "album_type",
+                    models.CharField(
+                        choices=[("LP", "LP"), ("EP", "EP"), ("UK", "Unknown")],
+                        default="LP",
+                        max_length=2,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Track',
+            name="Track",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=200)),
-                ('track_number', models.PositiveIntegerField()),
-                ('lyrics', models.TextField()),
-                ('album', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='albums.album')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=200)),
+                ("track_number", models.PositiveIntegerField()),
+                ("lyrics", models.TextField()),
+                (
+                    "album",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="albums.album"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Artist',
+            name="Artist",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('mbid', models.CharField(db_index=True, max_length=36, unique=True)),
-                ('slug', models.SlugField(max_length=100, unique=True)),
-                ('name', models.CharField(max_length=100)),
-                ('albums', models.ManyToManyField(blank=True, related_name='artists', to='albums.album')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("mbid", models.CharField(db_index=True, max_length=36, unique=True)),
+                ("slug", models.SlugField(max_length=100, unique=True)),
+                ("name", models.CharField(max_length=100)),
+                (
+                    "albums",
+                    models.ManyToManyField(
+                        blank=True, related_name="artists", to="albums.album"
+                    ),
+                ),
             ],
         ),
     ]

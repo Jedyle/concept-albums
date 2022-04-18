@@ -53,7 +53,6 @@ class TestAlbumAnalysis:
 
 @pytest.mark.django_db
 class TestLikeAnalysis:
-
     def test_str(self):
         like = LikeAnalysisFactory()
         assert str(like) == f"User {like.user.username} likes '{like.analysis}'"

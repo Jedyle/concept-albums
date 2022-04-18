@@ -6,12 +6,15 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('albums_analyses', '0003_alter_albumanalysis_options'),
+        ("albums_analyses", "0003_alter_albumanalysis_options"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='albumanalysis',
-            options={'ordering': ['created_at'], 'verbose_name_plural': 'Album Analyses'},
+            name="albumanalysis",
+            options={
+                "ordering": ["created_at"],
+                "verbose_name_plural": "Album Analyses",
+            },
         ),
     ]

@@ -11,21 +11,72 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('albums', '0002_alter_album_mbid'),
+        ("albums", "0002_alter_album_mbid"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='AlbumAnalysis',
+            name="AlbumAnalysis",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('analysis', models.JSONField(validators=[conceptalbums.utils.JSONSchemaValidator(schema={'additionalProperties': False, 'properties': {'global': {'description': 'The text for the album global analysis', 'type': 'string'}, 'tracks': {'additionalProperties': False, 'description': 'Analyses for each (or some) tracks', 'patternProperties': {'^\\d+': {'additionalProperties': False, 'properties': {'analysis': {'type': 'string'}}, 'type': 'object'}}, 'type': 'object'}}, 'type': 'object'})])),
-                ('album', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='albums.album')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "analysis",
+                    models.JSONField(
+                        validators=[
+                            conceptalbums.utils.JSONSchemaValidator(
+                                schema={
+                                    "additionalProperties": False,
+                                    "properties": {
+                                        "global": {
+                                            "description": "The text for the album global analysis",
+                                            "type": "string",
+                                        },
+                                        "tracks": {
+                                            "additionalProperties": False,
+                                            "description": "Analyses for each (or some) tracks",
+                                            "patternProperties": {
+                                                "^\\d+": {
+                                                    "additionalProperties": False,
+                                                    "properties": {
+                                                        "analysis": {"type": "string"}
+                                                    },
+                                                    "type": "object",
+                                                }
+                                            },
+                                            "type": "object",
+                                        },
+                                    },
+                                    "type": "object",
+                                }
+                            )
+                        ]
+                    ),
+                ),
+                (
+                    "album",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="albums.album"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('album', 'user')},
+                "unique_together": {("album", "user")},
             },
         ),
     ]

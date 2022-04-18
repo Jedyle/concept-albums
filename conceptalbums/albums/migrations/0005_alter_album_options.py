@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('albums', '0004_add_timestamps'),
+        ("albums", "0004_add_timestamps"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='album',
-            options={'ordering': ['pk']},
+            name="album",
+            options={"ordering": ["pk"]},
         ),
     ]

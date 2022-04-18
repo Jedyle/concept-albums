@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('albums_analyses', '0002_add_timestamps'),
+        ("albums_analyses", "0002_add_timestamps"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='albumanalysis',
-            options={'verbose_name_plural': 'Album Analyses'},
+            name="albumanalysis",
+            options={"verbose_name_plural": "Album Analyses"},
         ),
     ]

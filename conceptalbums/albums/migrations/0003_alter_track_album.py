@@ -7,13 +7,17 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('albums', '0002_alter_album_mbid'),
+        ("albums", "0002_alter_album_mbid"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='track',
-            name='album',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tracks', to='albums.album'),
+            model_name="track",
+            name="album",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="tracks",
+                to="albums.album",
+            ),
         ),
     ]

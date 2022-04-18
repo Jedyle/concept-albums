@@ -9,5 +9,5 @@ class AlbumFilter(filters.FilterSet):
             "title": ["exact", "icontains"],
             "slug": ["exact"],
             "release_date": ["exact", "year__gt", "year__lt"],
-            "album_type": ["exact"]
+            "album_type": ["exact"],
         }

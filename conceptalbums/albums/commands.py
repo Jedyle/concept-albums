@@ -39,13 +39,8 @@ def create_album_from_musicbrainz_and_genius(mbid):
     print("Fetching tracks...")
     genius_client = GeniusClient()
     for index, track in enumerate(tracks_data):
-        lyrics = genius_client.get_song_lyrics(
-            artists_data[0]["name"],
-            track["title"]
-        )
+        lyrics = genius_client.get_song_lyrics(artists_data[0]["name"], track["title"])
         print(f"Found lyrics for {track['title']}...")
-        track = Track(
-            title=track["title"], lyrics=lyrics, track_number=index+1
-        )
+        track = Track(title=track["title"], lyrics=lyrics, track_number=index + 1)
         track.album = album
         track.save()

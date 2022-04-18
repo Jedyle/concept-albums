@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = "Create an album from a mbid, also fetching tracks and lyrics"
 
     def add_arguments(self, parser):
-        parser.add_argument('mbid', nargs='+', type=str)
+        parser.add_argument("mbid", nargs="+", type=str)
 
     def handle(self, *args, **options):
         mbids = options["mbid"]

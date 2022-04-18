@@ -7,4 +7,4 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
-    username = factory.Faker('last_name')
+    username = factory.Faker("last_name")
