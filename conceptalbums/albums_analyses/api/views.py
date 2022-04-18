@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, views, permissions, status
+from rest_framework import generics, views, permissions, status, exceptions
 from rest_framework.response import Response
 
 from albums.models import Album
@@ -7,6 +7,7 @@ from albums_analyses.models import AlbumAnalysis, LikeAnalysis
 from albums_analyses.api.serializers import (
     AlbumAnalysisListSerializer,
     AlbumAnalysisDetailsSerializer,
+    AlbumAnalysisCreateSerializer,
     LikeAnalysisSerializer,
 )
 
@@ -24,9 +25,21 @@ class AnalysisListView(generics.ListAPIView):
 
 
 class AnalysisDetailsView(generics.RetrieveAPIView):
-
     queryset = AlbumAnalysis.objects.all()
     serializer_class = AlbumAnalysisDetailsSerializer
+
+
+class AnalysisCreateView(generics.CreateAPIView):
+    queryset = AlbumAnalysis.objects.all()
+    serializer_class = AlbumAnalysisCreateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.is_valid(raise_exception=True)
+        album = serializer.validated_data["album"]
+        if AlbumAnalysis.objects.filter(album=album, user=self.request.user).exists():
+            raise exceptions.ValidationError("Analysis for this album already exists.")
+        serializer.save(user=self.request.user)
 
 
 class LikeAnalysisView(views.APIView):

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from albums.models import Album
 from albums.api.serializers import AlbumDetailsSerializer
 from albums_analyses.models import AlbumAnalysis, LikeAnalysis
 
@@ -41,6 +42,16 @@ class AlbumAnalysisDetailsSerializer(serializers.ModelSerializer):
             return LikeAnalysis.objects.filter(
                 analysis=obj, user=self.context["request"].user
             ).exists()
+
+
+class AlbumAnalysisCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AlbumAnalysis
+        fields = ["album", "analysis"]
+
+    album = serializers.SlugRelatedField(
+        slug_field="slug", queryset=Album.objects.all()
+    )
 
 
 class LikeAnalysisSerializer(serializers.ModelSerializer):

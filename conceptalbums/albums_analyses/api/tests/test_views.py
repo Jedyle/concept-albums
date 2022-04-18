@@ -2,8 +2,19 @@ import pytest
 from faker import Faker
 from rest_framework import status
 from albums.tests.factories import AlbumFactory
-from albums_analyses.models import LikeAnalysis
+from albums_analyses.models import LikeAnalysis, AlbumAnalysis
 from albums_analyses.tests.factories import AlbumAnalysisFactory, LikeAnalysisFactory
+
+
+@pytest.fixture
+def user(django_user_model):
+    return django_user_model.objects.create_user(username="user", password="password")
+
+
+@pytest.fixture
+def logged_client(user, client):
+    client.force_login(user)
+    return client
 
 
 @pytest.mark.django_db
@@ -71,6 +82,49 @@ class TestAnalysisListView:
 
 
 @pytest.mark.django_db
+class TestAnalysisCreate:
+
+    URL = "/api/albums_analyses/"
+
+    def test_anonymous(self, client):
+        album = AlbumFactory()
+        response = client.post(
+            self.URL,
+            {"album": album.slug, "analysis": {"global": "example"}},
+            content_type="application/json",
+        )
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_ok(self, user, logged_client):
+        album = AlbumFactory()
+        response = logged_client.post(
+            self.URL,
+            {"album": album.slug, "analysis": {"global": "example"}},
+            content_type="application/json",
+        )
+        assert response.status_code == status.HTTP_201_CREATED, response.json()
+        assert AlbumAnalysis.objects.filter(user=user, album=album).exists()
+
+    def test_wrong_album_slug(self, user, logged_client):
+        response = logged_client.post(
+            self.URL,
+            {"album": "fake-slug", "analysis": {"global": "example"}},
+            content_type="application/json",
+        )
+        assert response.status_code == status.HTTP_400_BAD_REQUEST, response.json()
+
+    def test_already_exists(self, user, logged_client):
+        album = AlbumFactory()
+        AlbumAnalysisFactory(user=user, album=album)
+        response = logged_client.post(
+            self.URL,
+            {"album": album.slug, "analysis": {"global": "example"}},
+            content_type="application/json",
+        )
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
 class TestAnalysisDetailsView:
 
     URL = "/api/albums_analyses/{}/"
@@ -91,32 +145,24 @@ class TestAnalysisDetailsView:
         album = res_json["album"]
         assert "tracks" in album
 
-    def test_logged_user_sees_likes(self, django_user_model, client):
+    def test_logged_user_sees_likes(self, user, logged_client):
         """
         If route is called by a logged user, there is an additiona info
         With whether the user likes the analysis (here true)
         """
-        user = django_user_model.objects.create_user(
-            username="Test", password="password"
-        )
-        client.force_login(user)
         analysis = AlbumAnalysisFactory()
         like = LikeAnalysisFactory(analysis=analysis, user=user)
-        response = client.get(self.URL.format(analysis.pk))
+        response = logged_client.get(self.URL.format(analysis.pk))
         assert response.status_code == status.HTTP_200_OK
         assert response.json()["logged_user_like"] is True
 
-    def test_logged_user_sees_not_like(self, django_user_model, client):
+    def test_logged_user_sees_not_like(self, user, logged_client):
         """
         If route is called by a logged user, there is an additiona info
         With whether the user likes the analysis (here false)
         """
-        user = django_user_model.objects.create_user(
-            username="Test", password="password"
-        )
-        client.force_login(user)
         analysis = AlbumAnalysisFactory()
-        response = client.get(self.URL.format(analysis.pk))
+        response = logged_client.get(self.URL.format(analysis.pk))
         assert response.status_code == status.HTTP_200_OK
         assert response.json()["logged_user_like"] is False
 
@@ -125,19 +171,6 @@ class TestAnalysisDetailsView:
 class TestLikeAnalysisView:
 
     URL = "/api/albums_analyses/{}/like/"
-
-    @pytest.fixture
-    @staticmethod
-    def user(django_user_model):
-        return django_user_model.objects.create_user(
-            username="user", password="password"
-        )
-
-    @pytest.fixture
-    @staticmethod
-    def logged_client(user, client):
-        client.force_login(user)
-        return client
 
     @pytest.fixture
     @staticmethod
