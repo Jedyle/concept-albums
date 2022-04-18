@@ -10,13 +10,14 @@ from albums_analyses.api.serializers import (
     LikeAnalysisSerializer,
 )
 
-from albums_analyses.api.filters import AlbumAnalysisFilter
+from albums_analyses.api.filters import AlbumAnalysisFilter, filter_nb_likes
 
 
 class AnalysisListView(generics.ListAPIView):
     def get_queryset(self):
         album = get_object_or_404(Album, slug=self.kwargs["slug"])
-        return AlbumAnalysis.objects.filter(album=album)
+        queryset = AlbumAnalysis.objects.filter(album=album)
+        return filter_nb_likes(queryset, self.request)
 
     serializer_class = AlbumAnalysisListSerializer
     filterset_class = AlbumAnalysisFilter

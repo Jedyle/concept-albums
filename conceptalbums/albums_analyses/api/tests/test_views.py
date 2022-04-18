@@ -29,6 +29,46 @@ class TestAnalysisListView:
             assert res_analysis["album"] == album.slug
             assert res_analysis["id"] in [a.pk for a in analyses]
 
+    def test_ordering(self, client):
+        """
+        Test ordering by nb of likes
+        """
+        album = AlbumFactory()
+        analyses = AlbumAnalysisFactory.create_batch(5, album=album)
+
+        LikeAnalysisFactory.create_batch(2, analysis=analyses[0])
+        LikeAnalysisFactory.create_batch(1, analysis=analyses[1])
+        LikeAnalysisFactory.create_batch(5, analysis=analyses[2])
+        LikeAnalysisFactory.create_batch(3, analysis=analyses[3])
+
+        ### 1. Reverse order
+
+        response = client.get(self.URL.format(album.slug) + "?ordering=-nb_likes")
+
+        # results should be sorted by reverse number of likes, so
+        # 2, 3, 0, 1, 4
+
+        results = response.json()["results"]
+        assert results[0]["id"] == analyses[2].id
+        assert results[1]["id"] == analyses[3].id
+        assert results[2]["id"] == analyses[0].id
+        assert results[3]["id"] == analyses[1].id
+        assert results[4]["id"] == analyses[4].id
+
+        ### 2. Ascending order
+
+        response = client.get(self.URL.format(album.slug) + "?ordering=nb_likes")
+
+        # results should be sorted by number of likes, so
+        # 4, 1, 0, 3, 2
+
+        results = response.json()["results"]
+        assert results[0]["id"] == analyses[4].id
+        assert results[1]["id"] == analyses[1].id
+        assert results[2]["id"] == analyses[0].id
+        assert results[3]["id"] == analyses[3].id
+        assert results[4]["id"] == analyses[2].id
+
 
 @pytest.mark.django_db
 class TestAnalysisDetailsView:

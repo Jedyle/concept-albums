@@ -7,10 +7,15 @@ from albums_analyses.models import AlbumAnalysis, LikeAnalysis
 class AlbumAnalysisListSerializer(serializers.ModelSerializer):
     class Meta:
         model = AlbumAnalysis
-        fields = ["id", "album", "user", "analysis"]
+        fields = ["id", "album", "user", "analysis", "likes"]
 
     user = serializers.SlugRelatedField(slug_field="username", read_only=True)
     album = serializers.SlugRelatedField(slug_field="slug", read_only=True)
+
+    likes = serializers.SerializerMethodField()
+
+    def get_likes(self, obj):
+        return obj.likes.count()
 
 
 class AlbumAnalysisDetailsSerializer(serializers.ModelSerializer):
@@ -21,11 +26,15 @@ class AlbumAnalysisDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AlbumAnalysis
-        fields = ["id", "album", "user", "analysis", "logged_user_like"]
+        fields = ["id", "album", "user", "analysis", "likes", "logged_user_like"]
 
     user = serializers.SlugRelatedField(slug_field="username", read_only=True)
     album = AlbumDetailsSerializer(read_only=True)
+    likes = serializers.SerializerMethodField()
     logged_user_like = serializers.SerializerMethodField()
+
+    def get_likes(self, obj):
+        return obj.likes.count()
 
     def get_logged_user_like(self, obj):
         if "request" in self.context and self.context["request"].user.is_authenticated:
