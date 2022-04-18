@@ -17,11 +17,14 @@ CLOSED: [2022-04-17 dim. 15:43]
 CLOSED: [2022-04-17 dim. 17:08]
 *** DONE GET album tracks (public)
 CLOSED: [2022-04-17 dim. 17:08]
-*** LIST / GET album analyses (public)
+*** DONE LIST / GET album analyses (public)
+CLOSED: [2022-04-18 lun. 15:12]
 **** DONE list of analysis for single album, filter by user, order by likes
 CLOSED: [2022-04-17 dim. 18:42]
-**** ORDER BY LIKES
+**** DONE ORDER BY LIKES
+CLOSED: [2022-04-18 lun. 15:12]
 **** DONE retrieve single analysis (with album)
 CLOSED: [2022-04-17 dim. 18:42]
 *** CREATE / UPDATE analysis (user)
-*** LIKE analysis (user except author)
+*** DONE LIKE analysis
+CLOSED: [2022-04-18 lun. 15:12]
