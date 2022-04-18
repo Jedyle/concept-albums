@@ -33,7 +33,7 @@ class TestAnalysisListView:
 @pytest.mark.django_db
 class TestAnalysisDetailsView:
 
-    URL = "/api/albums_analyses/{}"
+    URL = "/api/albums_analyses/{}/"
 
     def test_not_found(self, client):
         id_ = Faker().random_int()
@@ -46,14 +46,45 @@ class TestAnalysisDetailsView:
         assert response.status_code == status.HTTP_200_OK
 
         # make sure there is all album data in json
-        album = response.json()["album"]
+        res_json = response.json()
+        assert res_json["logged_user_like"] is None
+        album = res_json["album"]
         assert "tracks" in album
+
+    def test_logged_user_sees_likes(self, django_user_model, client):
+        """
+        If route is called by a logged user, there is an additiona info
+        With whether the user likes the analysis (here true)
+        """
+        user = django_user_model.objects.create_user(
+            username="Test", password="password"
+        )
+        client.force_login(user)
+        analysis = AlbumAnalysisFactory()
+        like = LikeAnalysisFactory(analysis=analysis, user=user)
+        response = client.get(self.URL.format(analysis.pk))
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()["logged_user_like"] is True
+
+    def test_logged_user_sees_not_like(self, django_user_model, client):
+        """
+        If route is called by a logged user, there is an additiona info
+        With whether the user likes the analysis (here false)
+        """
+        user = django_user_model.objects.create_user(
+            username="Test", password="password"
+        )
+        client.force_login(user)
+        analysis = AlbumAnalysisFactory()
+        response = client.get(self.URL.format(analysis.pk))
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json()["logged_user_like"] is False
 
 
 @pytest.mark.django_db
 class TestLikeAnalysisView:
 
-    URL = "/api/albums_analyses/{}/like"
+    URL = "/api/albums_analyses/{}/like/"
 
     @pytest.fixture
     @staticmethod

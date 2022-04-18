@@ -21,10 +21,17 @@ class AlbumAnalysisDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AlbumAnalysis
-        fields = ["id", "album", "user", "analysis"]
+        fields = ["id", "album", "user", "analysis", "logged_user_like"]
 
     user = serializers.SlugRelatedField(slug_field="username", read_only=True)
     album = AlbumDetailsSerializer(read_only=True)
+    logged_user_like = serializers.SerializerMethodField()
+
+    def get_logged_user_like(self, obj):
+        if "request" in self.context and self.context["request"].user.is_authenticated:
+            return LikeAnalysis.objects.filter(
+                analysis=obj, user=self.context["request"].user
+            ).exists()
 
 
 class LikeAnalysisSerializer(serializers.ModelSerializer):
